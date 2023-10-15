@@ -62,7 +62,6 @@ def embed_text(text):
         input=text,
         model=MODEL
     )
-    embeddings = response['data'][0]['embedding']
-    return embeddings
+    return response['data'][0]['embedding']
 
 ################################################################

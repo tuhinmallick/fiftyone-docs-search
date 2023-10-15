@@ -149,7 +149,6 @@ def get_page_markdown(html_file):
     with open(html_file) as f:
         page_html = f.read()
     page_md = markdownify(page_html, heading_style="ATX")
-    page = parse_page_markdown(page_md)
-    return page
+    return parse_page_markdown(page_md)
 
 ################################################################

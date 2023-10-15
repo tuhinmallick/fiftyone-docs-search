@@ -53,10 +53,7 @@ def validate_non_javascript(subsection_content):
         "window.dataLayer"
     ]
 
-    for js_string in js_strings:
-        if js_string in subsection_content:
-            return False
-    return True
+    return all(js_string not in subsection_content for js_string in js_strings)
 
 def validate_nonempty_text(subsection_content):
     return not set(subsection_content).issubset(set(" *+|\n"))
@@ -99,14 +96,13 @@ def split_page_into_sections(page_md):
                 curr_section_content += f"{title}:"
                 section_key = anchor
 
+            elif len(line)>0 and line[0] == "#" and " " in line:
+                curr_section_content += "\n" + line.split(" ")[1] + ":"
             else:
-                if len(line)>0 and line[0] == "#" and " " in line:
-                    curr_section_content += "\n" + line.split(" ")[1] + ":"
-                else:
-                    curr_section_content += "\n" + line
+                curr_section_content += "\n" + line
         if i < len(code):
             curr_section_content += '\n```' + code[i] + '```'
-    
+
     sections[section_key] = curr_section_content
     return sections
 
