@@ -225,18 +225,16 @@ class QueryIndexCommand(Command):
 
 
 def _has_subparsers(parser):
-    for action in parser._actions:
-        if isinstance(action, argparse._SubParsersAction):
-            return True
-
-    return False
+    return any(
+        isinstance(action, argparse._SubParsersAction)
+        for action in parser._actions
+    )
 
 
 def _iter_subparsers(parser):
     for action in parser._actions:
         if isinstance(action, argparse._SubParsersAction):
-            for subparser in action.choices.values():
-                yield subparser
+            yield from action.choices.values()
 
 
 class _RecursiveHelpAction(argparse._HelpAction):
@@ -302,8 +300,7 @@ __version__ = "0.20.1"
 def main():
     """Executes the `fiftyone-docs-search` tool with the given command-line args."""
     parser = _register_main_command(
-        FiftyOneDocsSearchCommand, 
-        version="FiftyOneDocsSearch v%s" % __version__
-        )
+        FiftyOneDocsSearchCommand, version=f"FiftyOneDocsSearch v{__version__}"
+    )
     args = parser.parse_args()
     args.execute(args)

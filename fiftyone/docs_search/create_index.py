@@ -25,10 +25,7 @@ def get_page_url(filepath):
     return f"{BASE_DOCS_URL}{filepath.split('html/')[1]}"
 
 def get_doc_type(doc_path):
-    for doc_type in DOC_TYPES:
-        if doc_type in doc_path:
-            return doc_type
-    return None
+    return next((doc_type for doc_type in DOC_TYPES if doc_type in doc_path), None)
 
 ################################################################
 
